@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Tracciamento Spedizione InPost</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: url('sfondo.png') no-repeat center top;
+      background-size: cover;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      background: #fff;
+      padding: 10px 20px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 10000;
+    }
+
+    .header img {
+      height: 40px;
+      margin-right: 12px;
+    }
+
+    .header span {
+      font-size: 26px;
+      font-weight: bold;
+      color: #333;
+      letter-spacing: 1px;
+    }
+
+    .loader-screen {
+      position: fixed;
+      top: 70px;
+      left: 0;
+      width: 100%;
+      height: calc(100% - 70px);
+      background: rgba(255,255,255,0.8); /* Sfondo semi-trasparente sopra l’immagine */
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      font-size: 18px;
+    }
+
+    .spinner {
+      border: 6px solid #d9d9d9;
+      border-top: 6px solid #4caf50;
+      border-radius: 50%;
+      width: 55px;
+      height: 55px;
+      animation: spin 1s linear infinite;
+      margin-top: 18px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .container {
+      display: none;
+      max-width: 660px;
+      margin: 110px auto;
+      background: rgba(255,255,255,0.95);
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 0 12px rgba(0,0,0,0.08);
+      position: relative;
+      z-index: 1;
+    }
+
+    .status-box {
+      background: #f3f3f3;
+      padding: 18px;
+      border-radius: 10px;
+      margin: 18px 0;
+      text-align: center;
+      border: 1px solid #ddd;
+    }
+
+    .status {
+      color: #2e7d32;
+      font-size: 22px;
+      font-weight: 700;
+    }
+
+    .details p {
+      font-size: 15px;
+      margin: 8px 0;
+    }
+
+    .progress-wrapper {
+      margin-top: 25px;
+      padding: 15px;
+      background: #f9f9f9;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+    }
+
+    .timeline-step {
+      display: flex;
+      align-items: center;
+      margin-bottom: 14px;
+      font-size: 15px;
+      font-weight: 500;
+      transition: all 0.3s;
+    }
+
+    .dot {
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      margin-right: 10px;
+      transition: all 0.3s;
+    }
+
+    .completed .dot {
+      background: #4caf50;
+    }
+
+    .pending .dot {
+      background: #bdbdbd;
+    }
+
+    .current .dot {
+      width: 25px;
+      height: 25px;
+      margin-right: 12px;
+    }
+
+    .completed {
+      color: #2e7d32;
+    }
+
+    .pending {
+      color: #555;
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <img src="logo.png" alt="InPost Logo">
+    <span>Tracking Spedizione</span>
+  </div>
+
+  <div class="loader-screen" id="loader">
+    Verifica stato spedizione in corso...
+    <div class="spinner"></div>
+  </div>
+
+  <div class="container" id="trackingContent">
+    <h2>📦 Dettagli Spedizione</h2>
+    <p><strong>Codice Tracking:</strong> 88529459453289</p>
+
+    <div class="status-box">
+      <div class="status">In Attesa</div>
+      <small>Il pacco è in attesa del corriere</small>
+    </div>
+
+    <div class="details">
+      <p><strong>Mittente:</strong> MITTENTE</p>
+      <p><strong>Destinatario:</strong> DESTINATARIO</p>
+      <p><strong>Locker:</strong> LOCKER</p>
+      <p><strong>Consegna stimata:</strong> 2-3 giorni lavorativi</p>
+    </div>
+
+    <div class="progress-wrapper" id="progressWrapper">
+      <div class="timeline-step completed">
+        <div class="dot"></div> Pacco registrato nel sistema
+      </div>
+      <div class="timeline-step pending">
+        <div class="dot"></div> Ritirato dal corriere
+      </div>
+      <div class="timeline-step pending">
+        <div class="dot"></div> In transito verso il locker
+      </div>
+      <div class="timeline-step pending">
+        <div class="dot"></div> In arrivo al punto di consegna
+      </div>
+      <div class="timeline-step pending">
+        <div class="dot"></div> Disponibile per il ritiro
+      </div>
+    </div>
+  </div>
+
+  <script>
+    setTimeout(function() {
+      // Nascondi loader e mostra contenuto
+      document.getElementById("loader").style.display = "none";
+      document.getElementById("trackingContent").style.display = "block";
+
+      // Imposta lo stato attuale sull'ultimo step completato
+      const steps = document.querySelectorAll("#progressWrapper .timeline-step");
+      let lastCompleted = null;
+      steps.forEach(step => {
+        if (step.classList.contains("completed")) {
+          lastCompleted = step;
+        }
+      });
+      if (lastCompleted) {
+        lastCompleted.classList.add("current");
+      }
+    }, 3000);
+  </script>
+
+</body>
+</html>
