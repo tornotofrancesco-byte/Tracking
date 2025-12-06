@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Tracciamento Spedizione InPost</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -43,7 +44,7 @@
       left: 0;
       width: 100%;
       height: calc(100% - 70px);
-      background: rgba(255,255,255,0.8); /* Sfondo semi-trasparente sopra l’immagine */
+      background: rgba(255,255,255,0.8);
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -146,6 +147,44 @@
       color: #555;
     }
 
+    /* Adattamento per schermi piccoli */
+    @media (max-width: 768px) {
+      .header {
+        padding: 8px 12px;
+      }
+
+      .header span {
+        font-size: 20px;
+      }
+
+      .container {
+        margin: 90px 15px;
+        padding: 15px;
+        max-width: 100%;
+      }
+
+      .status-box {
+        padding: 12px;
+      }
+
+      .details p {
+        font-size: 14px;
+      }
+
+      .timeline-step {
+        font-size: 14px;
+      }
+
+      .dot {
+        width: 12px;
+        height: 12px;
+      }
+
+      .current .dot {
+        width: 20px;
+        height: 20px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -197,11 +236,9 @@
 
   <script>
     setTimeout(function() {
-      // Nascondi loader e mostra contenuto
       document.getElementById("loader").style.display = "none";
       document.getElementById("trackingContent").style.display = "block";
 
-      // Imposta lo stato attuale sull'ultimo step completato
       const steps = document.querySelectorAll("#progressWrapper .timeline-step");
       let lastCompleted = null;
       steps.forEach(step => {
